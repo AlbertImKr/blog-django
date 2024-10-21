@@ -1,0 +1,115 @@
+{% extends "../base.html" %}
+{% load static %}
+{% block css %}
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700&family=Rubik:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendor/font-awesome/css/all.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}">
+    <!-- Theme CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 col-xl-6 mx-auto">
+                    <div class="bg-primary bg-opacity-10 rounded p-4 p-sm-5">
+                        <h2>새로운 계정 만들기</h2>
+                        <!-- Form START -->
+                        {% if form.errors %}
+                            {% for field, errors in form.errors.items %}
+                                {% for error in errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {% if field ==  "username" %}
+                                            이메일: {{ error }}
+                                        {% elif field == "password1" %}
+                                            비밀번호: {{ error }}
+                                        {% elif field == "password2" %}
+                                            비밀번호 확인: {{ error }}
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                        {% endif %}
+
+                        <form class="mt-4" method="post">
+                            {% csrf_token %}
+                            <!-- Email -->
+                            <div class="mb-3">
+                                <label class="form-label" for="exampleInputEmail1">이메일 주소</label>
+                                <input type="email" class="form-control" id="exampleInputEmail1" name="username"
+                                       aria-describedby="emailHelp" placeholder="E-mail">
+                            </div>
+                            <!-- Password -->
+                            <div class="mb-3">
+                                <label class="form-label" for="exampleInputPassword1">비밀번호</label>
+                                <input type="password" class="form-control" id="exampleInputPassword1" name="password1"
+                                       placeholder="*********">
+                            </div>
+                            <!-- Password -->
+                            <div class="mb-3">
+                                <label class="form-label" for="exampleInputPassword2">비밀번호 확인</label>
+                                <input type="password" class="form-control" id="exampleInputPassword2" name="password2"
+                                       placeholder="*********">
+                            </div>
+                            <!-- Checkbox -->
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="termsCheck"
+                                       onchange="toggleSubmitButton()">
+                                <label class="form-check-label" for="termsCheck">
+                                    약관에 동의합니다.
+                                </label>
+                            </div>
+                            <!-- Button -->
+                            <div class="row align-items-center">
+                                <div class="col-sm-4">
+                                    <button type="submit" class="btn btn-success" id="submitButton" disabled>가입하기
+                                    </button>
+                                </div>
+                                <div class="col-sm-8 text-sm-end">
+                                    <span>이미 계정이 있으신가요?&nbsp;&nbsp;
+                                        <a href="/accounts/signin/"><u>로그인</u></a></span>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- Form END -->
+                        <hr>
+                        <!-- Social-media btn -->
+                        <div class="text-center">
+                            <ul class="list-unstyled d-sm-flex mt-3 justify-content-center">
+                                <li class="mx-2">
+                                    <a href="#" class="btn bg-google d-inline-block"><i
+                                        class="fab fa-google me-2"></i>
+                                        Google로 가입하기</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block script %}
+    <div class="back-top"><i class="bi bi-arrow-up-short"></i></div>
+    <!-- Bootstrap JS -->
+    <script src={% static 'assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}></script>
+    <!-- Template Functions -->
+    <script src={% static 'assets/js/functions.js' %}></script>
+
+    <script>
+        function toggleSubmitButton() {
+            const checkbox = document.getElementById('termsCheck');
+            const submitButton = document.getElementById('submitButton');
+
+            submitButton.disabled = !checkbox.checked;
+        }
+    </script>
+{% endblock %}
